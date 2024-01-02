@@ -8,7 +8,7 @@
         class="d-flex justify-content-between align-items-center"
       >
         <b-card-text class="h5 text-center"
-          >Actualizar nota: {{ nota.date }}</b-card-text
+          >Actualizar nota {{nota.title}}: {{ nota.date }} </b-card-text
         >
         <b-button
           :variant="nota.editandoNota ? 'danger' : 'light'"
@@ -171,7 +171,7 @@ export default {
           });
         });
 
-        // Al inicio, mostrar todas las notas sin filtrar si tiene id
+        // Al inicio, la nota con id
         if (this.context.id !== undefined && this.context.id !== null) {
           this.filtrarNotas();
         } else {
@@ -228,9 +228,22 @@ export default {
           hora: (nota.hora = ahora.toLocaleTimeString(undefined, opcionesHora)),
           fechaCreada: (nota.fechaCreada = ahora.toLocaleDateString()),
         };
-
+         
         await updateNote(this.email, nota.id, datos);
-      } catch (error) {}
+        this.toggleEditarNota(nota)
+
+        const id = this.$route.query.id;
+        if (id !== null && id !== undefined && id !== "") {
+          this.$router.push({
+              name: "notes-list",
+              params: {
+                email: this.$route.params.email
+              },
+            });
+        }
+      } catch (error) {
+      
+      }
     },
   },
 };

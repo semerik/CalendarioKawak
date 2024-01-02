@@ -5,14 +5,13 @@
       <b-col class="m-5">
         <p class="h1">Calendario kawak</p>
         <p class="h3 mt-4">Prueba técnica</p>
-        <p class="mt-3">
+        <p class="mt-3" >
           Esta aplicación web fue desarrollada con Vue2/Cli como prueba técnica
           para Kawak. Espero les guste,<br />
           La aplicación se ha diseñado con BootstrapVue,<br />
           la gestión de notas está hecha con Firebase y la navegación por
           routerLink.<br />
-        </p>
-        <p>
+           <br />
           * Para agregar una nota seleccione la fecha que quiere en el
           calendario y rellene los campos. <br />
           * Se mostraran todas las notas que tiene al final de la pagina. <br />
@@ -110,6 +109,7 @@ export default {
       // Context es el objeto que devuelve calendar
       context: null,
       email: String.trim,
+      
       //EL form para agregar una nota
       form: {
         date: "Seleccione una fecha",
@@ -126,13 +126,16 @@ export default {
     // Metodo del calendario
     onContext(ctx) {
       const id = this.$route.query.id;
+      
       if (id !== null && id !== undefined && id !== "") {
+      
         this.context = {
           ...ctx, // Copia todas las propiedades existentes
           id: id, // Pasar el id
         };
+        this.form.date = `${this.context.activeYMD || "Ninguna"}`;
         this.obtenerHoraActual();
-        console.log(this.context);
+
       } else {
         this.context = ctx;
         this.form.date = `${this.context.activeYMD || "Ninguna"}`;
@@ -151,10 +154,10 @@ export default {
         };
 
         await setNote(this.email, datos);
-
         this.form.title = "";
         this.form.descripcion = "";
         this.form.tags = [];
+
       } catch (error) {
         console.log(error);
       }
